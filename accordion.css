@@ -2,98 +2,146 @@
     --bg: #0f172a;
     --card: #111827;
     --muted: #94a3b8;
-    --text: #e5e7eb; 
+    --text: #e5e7eb;
     --accent: #38bdf8;
-    --ring: #7dd3fc;
     --radius: 16px;
     --shadow: 0 10px 30px rgba(0,0,0,.35);
-    --speed: 360ms; /* den mängd tid animeringen tar */
-    --easing: cubic-bezier(.22,.61,.36,1); /* smooth */
-    --content-max: 75vh; /* max öppningshöjd */
+    --speed: 600ms;
+    --easing: cubic-bezier(.25,.8,.25,1);
 }
 
-* { 
-    box-sizing: border-box; 
-}
-
-html, body { height: 100% }
-
-body {
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+}
+
+html, body {
+    min-height: 100%;
     background: radial-gradient(1200px 800px at 10% -10%, #12213a, transparent),
-    radial-gradient(1200px 800px at 110% 10%, #1a2338, transparent),
-    var(--bg);
+                radial-gradient(1200px 800px at 110% 10%, #1a2338, transparent),
+                var(--bg);
     color: var(--text);
-    font-size: 16px;
-    display: grid;
-    place-items: center;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     padding: 32px;
 }
 
-.wrap {
-    width: min(880px, 100%);
-}
-
 h1 {
-font-weight: 700;
-letter-spacing: .2px;
-margin: 0 0 16px;
-}
-.sub {
-color: var(--muted);
-margin: 0 0 24px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .accordion {
-background: color-mix(in lab, var(--card), black 12%);
-border: 1px solid color-mix(in lab, var(--card), white 8%);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-overflow: hidden;
+    width: min(880px, 100%);
+    background: color-mix(in lab, var(--card), black 12%);
+    border: 1px solid color-mix(in lab, var(--card), white 8%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
 }
 
-/* Accordion Item */
-.item + .item { border-top: 1px solid color-mix(in lab, var(--card), white 8%); }
-
-.control { /* label fungerar som knapp */
-display: grid;
-grid-template-columns: 1fr auto;
-align-items: center;
-gap: 16px;
-width: 100%;
-padding: 18px 22px;
-cursor: pointer;
-user-select: none;
-background: transparent;
-transition: background var(--speed) var(--easing);
+.item + .item {
+    border-top: 1px solid color-mix(in lab, var(--card), white 8%);
 }
-.control:hover { background: color-mix(in lab, var(--card), white 4%); }
+
+.control {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 18px 22px;
+    cursor: pointer;
+    transition: background var(--speed) var(--easing);
+}
+
+.control:hover {
+    background: color-mix(in lab, var(--card), white 4%);
+}
 
 .title {
-font-size: 17px;
-font-weight: 600;
+    font-size: 17px;
+    font-weight: 600;
 }
-.hint { color: var(--muted); font-size: 14px; }
 
 .icon {
-width: 22px; height: 22px; display: inline-grid; place-items: center;
-border: 1px solid color-mix(in lab, var(--card), white 12%);
-border-radius: 8px;
-transition: transform var(--speed) var(--easing), background var(--speed) var(--easing), border-color var(--speed) var(--easing);
+    width: 22px;
+    height: 22px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid color-mix(in lab, var(--card), white 12%);
+    border-radius: 8px;
+    transition:
+        transform var(--speed) var(--easing),
+        background var(--speed) var(--easing),
+        border-color var(--speed) var(--easing);
 }
 
-/* Dolda checkboxar */
-.toggle { position: absolute; opacity: 0; pointer-events: none; }
+.toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
 
-/* Innehållspanel */
+/* -----------------------------
+    PANEL MED MJUK ANIMATION
+----------------------------- */
 .panel {
-display: grid;
-grid-template-rows: 0fr; /* magin: stängd */
-transition: grid-template-rows var(--speed) var(--easing);
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--speed) var(--easing);
 }
-.panel > .inner { overflow: hidden; }
+
+.panel > .inner {
+    overflow: hidden;
+}
+
+.toggle:checked + .control + .panel {
+    grid-template-rows: 1fr;
+}
+
+/* -------------------------- */
 
 .content {
-padding: 0 22px 18px 22px;
-color: var(--text);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 0 22px 18px 22px;
+}
+
+/* Rotera + till × */
+.toggle:checked + .control .icon {
+    transform: rotate(45deg);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Galleri - responsivt */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.gallery img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Stora bilder (flik 4) */
+.panel img:not(.gallery img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Responsiv anpassning */
+@media (max-width: 600px) {
+    .gallery img {
+        max-width: 100%;
+    }
 }
