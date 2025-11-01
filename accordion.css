@@ -1,0 +1,99 @@
+:root {
+    --bg: #0f172a;
+    --card: #111827;
+    --muted: #94a3b8;
+    --text: #e5e7eb; 
+    --accent: #38bdf8;
+    --ring: #7dd3fc;
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --speed: 360ms; /* den mängd tid animeringen tar */
+    --easing: cubic-bezier(.22,.61,.36,1); /* smooth */
+    --content-max: 75vh; /* max öppningshöjd */
+}
+
+* { 
+    box-sizing: border-box; 
+}
+
+html, body { height: 100% }
+
+body {
+    margin: 0;
+    background: radial-gradient(1200px 800px at 10% -10%, #12213a, transparent),
+    radial-gradient(1200px 800px at 110% 10%, #1a2338, transparent),
+    var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    display: grid;
+    place-items: center;
+    padding: 32px;
+}
+
+.wrap {
+    width: min(880px, 100%);
+}
+
+h1 {
+font-weight: 700;
+letter-spacing: .2px;
+margin: 0 0 16px;
+}
+.sub {
+color: var(--muted);
+margin: 0 0 24px;
+}
+
+.accordion {
+background: color-mix(in lab, var(--card), black 12%);
+border: 1px solid color-mix(in lab, var(--card), white 8%);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+overflow: hidden;
+}
+
+/* Accordion Item */
+.item + .item { border-top: 1px solid color-mix(in lab, var(--card), white 8%); }
+
+.control { /* label fungerar som knapp */
+display: grid;
+grid-template-columns: 1fr auto;
+align-items: center;
+gap: 16px;
+width: 100%;
+padding: 18px 22px;
+cursor: pointer;
+user-select: none;
+background: transparent;
+transition: background var(--speed) var(--easing);
+}
+.control:hover { background: color-mix(in lab, var(--card), white 4%); }
+
+.title {
+font-size: 17px;
+font-weight: 600;
+}
+.hint { color: var(--muted); font-size: 14px; }
+
+.icon {
+width: 22px; height: 22px; display: inline-grid; place-items: center;
+border: 1px solid color-mix(in lab, var(--card), white 12%);
+border-radius: 8px;
+transition: transform var(--speed) var(--easing), background var(--speed) var(--easing), border-color var(--speed) var(--easing);
+}
+
+/* Dolda checkboxar */
+.toggle { position: absolute; opacity: 0; pointer-events: none; }
+
+/* Innehållspanel */
+.panel {
+display: grid;
+grid-template-rows: 0fr; /* magin: stängd */
+transition: grid-template-rows var(--speed) var(--easing);
+}
+.panel > .inner { overflow: hidden; }
+
+.content {
+padding: 0 22px 18px 22px;
+color: var(--text);
+}
